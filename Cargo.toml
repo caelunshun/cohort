@@ -1,0 +1,10 @@
+[package]
+name = "cohort"
+version = "0.1.0"
+authors = ["caelunshun <caelunshun@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+legion = { git = "https://github.com/jaynus/legion", branch = "systems" }
+inventory = "0.1.4"
+cohort-codegen = { path = "codegen" }

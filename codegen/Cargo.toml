@@ -1,0 +1,13 @@
+[package]
+name = "cohort-codegen"
+version = "0.1.0"
+authors = ["caelunshun <caelunshun@gmail.com>"]
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = { version = "1.0.5", features = ["full"] }
+quote = "1.0.2"
+proc-macro2 = "1.0.5"
