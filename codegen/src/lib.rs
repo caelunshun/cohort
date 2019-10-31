@@ -83,15 +83,23 @@ pub fn system(
 
     let content = &input.block;
 
-    let fn_ident = input.sig.ident;
+    let fn_ident = Ident::new(&format!("build_{}", input.sig.ident), Span::call_site());
+    let test_fn_ident = Ident::new(&format!("run_{}", input.sig.ident), Span::call_site());
+    let system_name = input.sig.ident.to_string();
 
     let res = quote! {
         fn #fn_ident() -> Box<dyn legion::system::Schedulable> {
-            legion::system::SystemBuilder::<()>::new("")
+            legion::system::SystemBuilder::<()>::new(#system_name)
                 #(# builder_args )*
                 .build(|#cmd_buf_ident, #prep_world_ident, (#( #resource_idents ),*), _: &mut ()| {
                     #content
                 })
+        }
+
+        fn #test_fn_ident(world: &legion::prelude::World) {
+            let mut systems = [#fn_ident()];
+            let mut executor = legion::prelude::StageExecutor::new(&mut systems);
+            executor.execute(world);
         }
     };
 

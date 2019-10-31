@@ -21,11 +21,22 @@ fn basic() {
     world.resources.insert(TestResource1(1));
     world.resources.insert(TestResource2(4));
 
-    let test_system = test_system();
+    let test_system = build_test_system();
     let mut systems = [test_system];
     let mut scheduler = StageExecutor::new(&mut systems);
 
     scheduler.execute(&world);
 
+    assert_eq!(world.resources.get::<TestResource2>().unwrap().0, 5);
+}
+
+#[test]
+fn run_now() {
+    let universe = Universe::new();
+    let mut world = universe.create_world();
+    world.resources.insert(TestResource1(1));
+    world.resources.insert(TestResource2(4));
+
+    run_test_system(&world);
     assert_eq!(world.resources.get::<TestResource2>().unwrap().0, 5);
 }
